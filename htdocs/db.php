@@ -7,9 +7,9 @@ class DBConnection {
         //
         // TODO: export this to include file
         //
-                $this->db = mysql_pconnect( "localhost", "playsouthend", "southendplay101" );
+                $this->db = mysql_pconnect( "localhost", "playyourplace", "PlayYourPlace101" );
                 $this->dieIfNotConnected();
-                mysql_select_db( "playsouthend-db", $this->db );
+                mysql_select_db( "playyourplace", $this->db );
         }
         
         public function isConnected() {
