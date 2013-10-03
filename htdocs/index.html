@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Play Your Place</title>
+    <!-- styles -->
+    <link href="css/default.css" rel="stylesheet" />
+
+    <!-- scripts -->
+    <!-- supporting libraries -->
+    <script src="lib/mustache.js"></script>
+    <script src="lib/Box2dWeb-2.1.a.3.js"></script>
+    <script src="lib/MD5.js"></script>
+    </script>
+
+    <!-- scripts in need of modularisation -->
+    <script src="js/graphicsprimitives.js"></script>
+
+    <!-- app scripts -->
+    <script src="js/localplay.js"></script>
+    <script src="js/localplay.timer.js"></script>
+    <script src="js/localplay.domutils.js"></script>
+    <script src="js/localplay.log.js"></script>
+    <script src="js/localplay.datasource.js"></script>
+    <script src="js/localplay.imageprocessor.js"></script>
+    <script src="js/localplay.dialogbox.js"></script>
+    <script src="js/localplay.listview.js"></script>
+    <script src="js/localplay.menu.js"></script>
+    <script src="js/localplay.authentication.js"></script>
+    <script src="js/localplay.ratingpanel.js"></script>
+    <script src="js/localplay.objecteditor.js"></script>
+    <script src="js/localplay.world.js"></script>
+    <script src="js/localplay.sprite.js"></script>
+    <script src="js/localplay.game.js"></script>
+    <script src="js/localplay.game.gameplay.js"></script>
+    <script src="js/localplay.game.gamestate.js"></script>
+    <script src="js/localplay.game.background.js"></script>
+    <script src="js/localplay.game.behaviour.js"></script>
+    <script src="js/localplay.game.item.js"></script>
+    <script src="js/localplay.game.avatar.js"></script>
+    <script src="js/localplay.game.level.js"></script>
+    <script src="js/localplay.game.storyeditor.js"></script>
+    <script src="js/localplay.game.backgroundeditor.js"></script>
+    <script src="js/localplay.game.itemeditor.js"></script>
+    <script src="js/localplay.game.soundeditor.js"></script>
+    <script src="js/localplay.game.controller.js"></script>
+    <script src="js/localplay.game.controller.preview.js"></script>
+    <script src="js/localplay.game.controller.player.js"></script>
+    <script src="js/localplay.game.controller.editor.js"></script>
+    <script src="js/localplay.game.arcade.js"></script>
+    <script src="js/localplay.creator.js"></script>
+    <script src="js/localplay.game.avatareditor.js"></script>
+    <script src="js/localplay.game.layouteditor.js"></script>
+    <script src="js/localplay.game.thingeditor.js"></script>
+    <script src="js/localplay.game.leveleditor.js"></script>
+
+    <script>
+        //
+        //
+        //
+        function init() {
+            //
+            // create top picks game
+            //
+            var canvas = document.getElementById("canvas");
+            if (canvas) {
+                localplay.game.arcade.load("all", function (arcade) {
+                    var game = localplay.game.creategamewitharcade(canvas, arcade.rows);
+                    localplay.game.controller.preview.attachtogame(game);
+                });
+            }
+            //
+            //
+            //
+            var searchField = document.getElementById("search");
+            if (searchField) {
+                searchField.onkeyup = function (e) {
+                    if (e.keyCode == 13) {
+                        search(searchField.value);
+                    }
+                }
+            }
+        }
+
+        function createmenu() {
+            var menu = document.getElementById("menu");
+            localplay.menu.attachmenu(menu,
+                    [
+                        {
+                            icon: "images/blank.png",
+                            name: "ARCADES",
+                            id: "arcades"
+                        },
+
+                        {
+                            icon: "images/blank.png",
+                            name: "PEOPLE",
+                            id: "people"
+                        },
+
+                        {
+                            icon: "images/new.png",
+                            name: "MAKE NEW LEVEL",
+                            id: "new"
+                        },
+                        {
+                            icon: "images/info.png",
+                            name: "HOW TO",
+                            id: "howto"
+                        }
+                    ],
+                        function (id) {
+                            var command = id.split(".");
+                            if (command.length >= 2) {
+                                switch (command[0]) {
+                                    case "menu":
+                                        switch (command[1]) {
+                                            case "open":
+                                                break;
+                                            case "close":
+                                                break;
+                                        }
+                                        break;
+                                    case "menuitem":
+
+                                        switch (command[1]) {
+                                            case "arcades":
+                                                localplay.game.arcade.showarcadedialog();
+                                                break;
+
+                                            case "people":
+                                                localplay.creator.showpeopledialog();
+                                                break;
+
+                                            case "new":
+                                                //search();
+                                                //
+                                                // show level creator
+                                                //
+                                                localplay.authentication.authenticate(function () {
+                                                    if (localplay.authentication.isauthenticated()) {
+                                                        window.location = "playnew.html?id=-1";
+                                                    } else {
+                                                        localplay.dialogbox.alert("Localplay", "You must login to create a new level!");
+                                                    }
+                                                });
+
+                                                break;
+                                            case "howto":
+                                                //search();
+                                                break;
+                                        }
+                                        break;
+                                }
+                            }
+
+                        }, true);
+
+        }
+        function search(searchtext) {
+            localplay.listview.createlibrarydialog("Search Levels", "getlevel.php?listview=true",
+                function (item) {
+                    window.location = "playnew.html?id=" + item.data.id;
+                }, 64, searchtext);
+        }
+    </script>
+</head>
+<body onload="init();">
+    <div style="position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; background-color: white;">
+        <img style="position: absolute; top: 16px; left: 16px" src="images/lplogo.png" />
+        <div class="bugbox" onclick='window.open( "https://docs.google.com/spreadsheet/viewform?formkey=dFlvb0JKSjZ6UEF2QnRianAyZWpMNlE6MA", "_blank", "toolbar=0,location=0,menubar=0" )'>report a bug</div>
+        <!-- content -->
+        <div id="content" style="position: absolute; top: 96px; left: 16px; bottom: 0px; right: 320px; max-height: 672px;">
+            <!-- menu bar -->
+            <div class="menubar">
+                <div id="menu" class="menubaritem">
+                    <img class="menubaritem" src="images/icons/menu-01.png" onload="createmenu();" />&nbsp;Menu
+                </div>
+                <div class="menubaritem" style="float: right;" onclick="localplay.creator.showmyprofile();">
+                    <img class="menubaritem" src="images/icons/me-01.png" />&nbsp;Me&nbsp;&nbsp;
+                </div>
+                <div class="menubaritem" style="float: right;">
+                    <input id="search" type="search" placeholder="search levels" />
+                </div>
+            </div>
+            <div id="canvascontainer" style="position: absolute; top: 42px; left: 0px; bottom: 0px; right: 0px; max-height: 723px; overflow: hidden;">
+                <canvas id="canvas" class="slider" width="1024" height="723">Your browser doesn't support HTML5 canvas</canvas>
+            </div>
+        </div>
+        <div style="position: absolute; left: 0px; top: 832px; right: 0px; text-align: center; border-top: 2px solid lightgray;">
+            <img class="footerlogo" src="images/footerlogos/artscouncil-web-01.png" />
+            <img class="footerlogo" src="images/footerlogos/ff-web-01.png" />
+            <img class="footerlogo" src="images/footerlogos/leighart-web-01.png" />
+            <img class="footerlogo" src="images/footerlogos/leighfolk-web-01.png" />
+            <img class="footerlogo" src="images/footerlogos/metal-web-01.png" />
+            <img class="footerlogo" src="images/footerlogos/soda-web-01.png" />
+            <img class="footerlogo" src="images/footerlogos/southendcouncil-web-01.png" />
+            <img class="footerlogo" src="images/footerlogos/titlfactor-web-01.png" />
+            <img class="footerlogo" src="images/footerlogos/writtle-web-01.png" />
+        </div>
+        <div id="sidebar" style="position: absolute; top: 0px; right: 0px; width: 256px; height: 768px; background-color: rgb(255,143,33); padding: 16px; max-height: 800px;">
+            <div class="blockheader">
+                A GAME TO<br />
+                DRAW, MAKE<br />
+                AND PLAY YOUR<br />
+                FUTURE TOWN.
+            </div>
+            <!-- twitter feed -->
+            <div class="twitterbox">
+                <a height="256" style="position: absolute; top: 4px; left: 0px; bottom: 0px; right: 0px;" class="twitter-timeline" href="https://twitter.com/twitterapi" data-widget-id="336445330642042880" data-chrome="noheader nofooter noborders transparent noborders">@PlayingSouthend</a>
+                <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + "://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs); } }(document, "script", "twitter-wjs");</script>
+            </div>
+            <hr />
+            <div style="text-align: left; padding: 8px;">
+                <a class="image" target="_blank" href="http://www.twitter.com/PlayingSouthend">
+                    <img src="images/icons/twitter-01.png" /></a>
+                <a class="image" target="_blank" href="http://www.facebook.com/playsouthend">
+                    <img src="images/icons/fb-01.png" /></a>
+                <a class="image" target="_blank" href="http://www.flickr.com/photos/localplay">
+                    <img src="images/icons/flickr-01.png" /></a>
+                <a class="image" target="_blank" href="http://www.youtube.com/user/LocalPlayNet">
+                    <img src="images/icons/youtube-01.png" /></a>
+            </div>
+            <hr />
+            <div class="blockheader">
+                IF YOU DRAW<br />
+                IT WILL HAPPEN!
+            </div>
+
+            <!-- links -->
+            <div class="linkbox">
+                <a href="http://localplay.org.uk/about/">About</a><br />
+                <a href="http://localplay.org.uk/tutorials/">Tutorials</a><br />
+                <a href="http://localplay.org.uk/workshops/">Get involved</a><br />
+                <a href="http://localplay.org.uk/process/">Gallery</a><br />
+                <a href="http://localplay.org.uk/category/blog/">Blog</a><br />
+                <a href="http://localplay.org.uk/contact/">Press</a><br />
+                <a href="http://localplay.org.uk/contact/">Contact</a><br />
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

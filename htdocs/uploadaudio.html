@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Playsouthend - Upload Audio</title>
+    <!-- LocalPlay references -->
+    <link href="css/default.css" rel="stylesheet" />
+
+    <!-- legacy objects -->
+    <script src="js/graphicsprimitives.js"></script>
+
+     <!-- app scripts -->
+    <script src="js/localplay.js"></script>
+    <script src="js/localplay.domutils.js"></script>
+    <script src="js/localplay.log.js"></script>
+    <script src="js/localplay.datasource.js"></script>
+    <script src="js/localplay.imageprocessor.js"></script>
+    <script src="js/localplay.dialogbox.js"></script>
+    <script src="js/localplay.game.js"></script>
+    <script src="js/localplay.game.soundeditor.js"></script>
+
+    <script>
+        //
+        //
+        //
+        var data = { type : "music" };
+        function handleFileSelect(e,type) {
+            var files = e.target.files;
+            if (files.length == 0) return;
+            var f = files[0];
+            var reader = new FileReader();
+
+            // Closure to capture the file information.
+            reader.onload = (function (theFile) {
+                return function (e) {
+                    document.getElementById(type + "player").src = e.target.result;
+                    data[type] = e.target.result;
+                };
+            })(f);
+
+            // Read in the audio as a data URL.
+            reader.readAsDataURL(f);
+
+        }
+
+        function upload() {
+            if (data.mp3 === undefined || data.ogg === undefined || data.name === undefined || data.type === undefined) {
+                localplay.dialogbox.alert("Error", "Please fill in all fields!");
+                return false;
+            } else {
+                var audio = { mp3: data.mp3, ogg: data.ogg };
+                localplay.log("mp3 length: " + audio.mp3.length + "bytes ogg length:" + audio.ogg.length + "bytes");
+                var param = { name: data.name, type: data.type };
+                localplay.datasource.put('putaudio.php', audio, param, localplay.datasource.createprogressdialog("Uploading Audio",
+                    function (e) {
+                        var xhr = e.target;
+                        try {
+                            var response = JSON.parse(xhr.datasource.response);
+                            if (response.status === "OK") {
+                                //localplay.
+                            }
+                        } catch (error) {
+
+                        }
+                }));
+            }
+            return false;
+        }
+
+        function getlisting() {
+            var type =  document.getElementById('type').value;
+            var dialog = localplay.game.soundeditor.createaudiodialog(type, type);//new AudioDialog(type, type);
+            dialog.show();
+        }
+
+        function init() {
+
+            document.getElementById('mp3').addEventListener('change', function (e) { handleFileSelect(e, "mp3"); }, false);
+            document.getElementById('ogg').addEventListener('change', function (e) { handleFileSelect(e, "ogg"); }, false);
+            document.getElementById('name').addEventListener('change', function (e) { data.name = e.target.value; }, false);
+            document.getElementById('type').addEventListener('change', function (e) { data.type = e.target.value; }, false);
+        }
+
+    </script>
+</head>
+<body onload="init();" style="background-color: rgb( 255, 143, 33 );">
+    <form>
+        <h3>Upload Audio</h3>
+        <p>Name<br />
+            <input id="name" type="text" name="name" required="1"/></p>
+        <p>
+            Type<br /> 
+                <select id="type">
+                    <option>music</option>
+                    <option>effect</option>
+                </select>
+        </p>
+        <p>Mp3<br />
+            <audio id="mp3player" controls></audio><br />
+            <input id="mp3" type="file" name="mp3"  required="1"/>
+        </p>
+        <p>Ogg<br />
+            <audio id="oggplayer" controls></audio><br />
+            <input id="ogg" type="file" name="ogg"  required="1"/>
+        </p>
+        <input type="button" value="Upload" onclick="upload();"/>
+       <input type="button" value="Get Listing" onclick="getlisting();"/>
+    </form>
+</body>
+</html>

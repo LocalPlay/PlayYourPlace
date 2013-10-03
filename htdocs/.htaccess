@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^api/(.*)$ index.php?resource=$1 [L,QSA]

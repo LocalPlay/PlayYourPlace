@@ -1,0 +1,213 @@
+﻿@font-face {
+    font-family: 'CabinSketch';
+    src: url('../fonts/CabinSketch-Regular.otf');
+}
+
+body {
+    background: white;
+    color: rgb(128, 128, 128);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+div.fullscreen {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+}
+
+div.container {
+    position: absolute;
+    width: 1024px;
+    height: 720px;
+}
+
+div.menubar {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    height: 42px;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    font: bold 14px;
+    vertical-align: middle;
+}
+
+div.menubaritem {
+    display: inline-block;
+    height: 42px;
+    margin: 0 4px 0 4px;
+    line-height: 42px;
+    vertical-align: middle;
+    cursor: pointer;
+    opacity: 1.0;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+    div.menubaritem:hover {
+        opacity: 0.4;
+    }
+
+img.menubaritem {
+    vertical-align: middle;
+}
+div.sidebar {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 240px;
+    height: 768px;
+    background-color: rgb(255,143,33);
+}
+
+div.createlevelcontainer {
+   /*below menubar 4px padding*/
+   position: absolute;
+   top: 42px;
+   left: 0px;
+   bottom: 0px;
+   right: 0px;
+}
+
+
+div.promptcontainer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 110px;
+    background-color: white;
+}
+
+div.prompttext {
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    bottom: 8px;
+    right: 8px;
+    margin: auto;
+    text-align: center;
+    vertical-align: middle;
+    font-family: CabinSketch;
+    font-size: 24px;
+    text-transform: uppercase;
+    color: white;
+    background-color: rgb(255,143,33);
+}
+
+div.editormenubar {
+    position: absolute;
+    top: 110px;
+    left: 8px;
+    right: 8px;
+    height: 42px;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    font: bold 14px;
+    vertical-align: middle;
+}
+
+div.editorcontainer {
+   position: absolute;
+   top: 152px;
+   left: 0px;
+   bottom: 0px;
+   right: 0px;
+}
+
+div.splashcontainer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background-color: rgb(255,143,33);
+    text-align: center;
+}
+
+div.splashtext {
+    margin: auto;
+    width: 800px;
+    font-family: CabinSketch;
+    font-size: 84px;
+    text-align: left;
+    text-transform: uppercase;
+    color: white;
+    background-color: red;
+}
+
+div.listviewheader {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 42px;
+    background-color: rgba(0,0,0,0.6);
+    color: white;
+    font: bold 14px;
+    vertical-align: middle;
+}
+
+div.listviewcontent {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 42px;
+    bottom: 0px;
+    padding: 8px;
+    overflow-y: auto;
+    background: rgb(200, 200, 200);
+}
+
+div.listitem {
+    position: relative;
+    display: inline-block;
+    width: 285px;
+    height: 285px;
+    background: rgba(0,0,0,0.6);
+    margin: 4px;
+    color: white;
+    font-size: 10px;
+    font-weight: normal;
+}
+
+div.listitemheader {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: 8px;
+    max-height: 64px;
+}
+
+span.listitemheader {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+div.listitemfooter {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    bottom: 4px;
+    height: 28px;
+}
+
+img.listitemimage {
+    position: absolute;
+    top: 72px;
+    left: 0px;
+    bottom: 32px;
+    right: 0px;
+    margin: auto;
+    cursor: pointer;
+    max-height: 180px;
+    max-width: 240px;
+}
+
+
+
+
