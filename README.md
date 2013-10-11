@@ -76,4 +76,4 @@ The following libraries are used on the front end of the application.
 * MD5 - http://www.webtoolkit.info/javascript-md5.html
 
 Credit is due to the authors and contributors for making their work available for use here.
-Play Your Place is a Local Play project, instigated and designed by Ruth Catlow and Dr Mary Flanagan. Technical development by Soda 
+Play Your Place is a Local Play project, instigated and designed by Ruth Catlow and Dr Mary Flanagan. Technical development by Soda.
